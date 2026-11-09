@@ -30,7 +30,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;background:
   radial-gradient(40vmax 36vmax at 50% 40%, rgba(255,212,0,.50), transparent 64%),
   radial-gradient(36vmax 32vmax at 55% 104%, rgba(0,169,79,.35), transparent 64%),
   #fff6e8}
-body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Crect x='3' y='3' width='66' height='66' rx='12' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E");background-size:72px 72px}
 body{margin:0;background:#fff6e8;color:var(--ink);font:400 17px/1.5 var(--font);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
 a{color:#0066cc;text-decoration:none}
@@ -68,7 +68,7 @@ h1 .r{background:var(--R)} h1 .b{background:var(--B)} h1 .g{background:var(--G)}
 
 /* ---------- the cube ---------- */
 .play{display:flex;flex-direction:column;align-items:center;gap:18px}
-.scene{--size:300px;width:100%;height:calc(var(--size) * 1.45);display:grid;place-items:center;perspective:1100px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;position:relative}
+.scene{--size:250px;width:100%;height:calc(var(--size) * 1.7);display:grid;place-items:center;perspective:1100px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;position:relative}
 .scene:active{cursor:grabbing}
 .scene::after{content:"";position:absolute;bottom:4%;left:50%;width:calc(var(--size)*.9);height:26px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(0,0,0,.18),transparent);pointer-events:none}
 .cube{position:relative;width:var(--size);height:var(--size);transform-style:preserve-3d}
@@ -88,7 +88,17 @@ h1 .r{background:var(--R)} h1 .b{background:var(--B)} h1 .g{background:var(--G)}
 .hud{display:flex;gap:18px;font:600 13px/1 var(--mono);color:#26262b}
 .hud b{color:var(--ink)}
 .hint{margin:0;font-size:13px;color:#26262b;text-align:center;max-width:36em}
-@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:36px;gap:20px}.scene{--size:min(240px,62vw)}}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:36px;gap:20px}.scene{--size:min(210px,56vw)}}
+
+/* ---------- background: cubes that scramble and solve on a loop ---------- */
+.bgcubes{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bgscene{position:absolute;perspective:1600px;opacity:.42}
+.bgscene .cube{animation:spin var(--dur,48s) linear infinite;animation-direction:var(--dir,normal)}
+.bgscene.b1{--size:min(28vw,340px);width:var(--size);height:var(--size);right:-3vw;top:60vh;--dur:56s}
+.bgscene.b2{--size:min(22vw,260px);width:var(--size);height:var(--size);left:-4vw;top:78vh;--dur:44s;--dir:reverse}
+.bgscene.b3{--size:min(11vw,130px);width:var(--size);height:var(--size);left:43vw;top:12vh;--dur:36s}
+@keyframes spin{from{transform:rotateX(-24deg) rotateY(0deg)}to{transform:rotateX(-24deg) rotateY(360deg)}}
+@media (max-width:820px){.bgscene{opacity:.3}.bgscene.b1{--size:52vw;right:-16vw;top:58vh}.bgscene.b2{--size:40vw;left:-14vw;top:84vh}.bgscene.b3{display:none}}
 
 /* ---------- sections ---------- */
 section{padding-top:96px;scroll-margin-top:64px}
@@ -182,6 +192,7 @@ footer{margin:40px 0 0;padding:20px 0 48px;border-top:1px solid #d2d2d7;color:va
 </style>
 </head>
 <body>
+<div class="bgcubes" aria-hidden="true"><div class="bgscene b1"><div class="cube"></div></div><div class="bgscene b2"><div class="cube"></div></div><div class="bgscene b3"><div class="cube"></div></div></div>
 <nav class="top" aria-label="Main">
   <div class="wrap">
     <a class="mark" href="#top"><span class="mini" aria-hidden="true"><b style="background:var(--W)"></b><b style="background:var(--G)"></b><b style="background:var(--R)"></b><b style="background:var(--B)"></b><b style="background:var(--W)"></b><b style="background:var(--O)"></b><b style="background:var(--Y)"></b><b style="background:var(--R)"></b><b style="background:var(--G)"></b></span>Tshego</a>
@@ -351,7 +362,7 @@ footer{margin:40px 0 0;padding:20px 0 48px;border-top:1px solid #d2d2d7;color:va
   const round = M => M.map(r=>r.map(Math.round));
 
   let S = 100, cubies = [];
-  function sizeVars(){ S = cubeEl.getBoundingClientRect().width / 3 || 100; }
+  function sizeVars(){ S = cubeEl.offsetWidth / 3 || 100; }
 
   function build(){
     cubeEl.innerHTML=''; cubies=[]; sizeVars();
@@ -476,6 +487,64 @@ footer{margin:40px 0 0;padding:20px 0 48px;border-top:1px solid #d2d2d7;color:va
 
   // a short demo turn so visitors see it moves
   if(!reduce) setTimeout(()=>{ if(!history.length&&!busy){ move('R',false,{dur:420,record:false}); move('R',true,{dur:420,record:false}); } },900);
+})();
+</script>
+
+<script>
+/* Background cubes: each one scrambles itself, then solves itself, forever. */
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COL = {W:'#ffffff', Y:'#ffd400', R:'#e4002b', O:'#ff6a00', B:'#0046e0', G:'#00a94f'};
+  const FACES = [
+    {n:[0,-1,0],c:'W',u:[1,0,0],v:[0,0,1]},{n:[0,1,0],c:'Y',u:[1,0,0],v:[0,0,-1]},
+    {n:[0,0,1],c:'G',u:[1,0,0],v:[0,1,0]},{n:[0,0,-1],c:'B',u:[-1,0,0],v:[0,1,0]},
+    {n:[1,0,0],c:'R',u:[0,0,-1],v:[0,1,0]},{n:[-1,0,0],c:'O',u:[0,0,1],v:[0,1,0]}];
+  const I=[[1,0,0],[0,1,0],[0,0,1]];
+  const mul=(A,B)=>A.map(r=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));
+  const app=(A,v)=>A.map(r=>r[0]*v[0]+r[1]*v[1]+r[2]*v[2]);
+  const rot=(a,t)=>{const c=Math.cos(t),s=Math.sin(t);return a===0?[[1,0,0],[0,c,-s],[0,s,c]]:a===1?[[c,0,s],[0,1,0],[-s,0,c]]:[[c,-s,0],[s,c,0],[0,0,1]];};
+  const rnd=M=>M.map(r=>r.map(Math.round));
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const waitVisible=()=>document.hidden?new Promise(r=>document.addEventListener('visibilitychange',function h(){if(!document.hidden){document.removeEventListener('visibilitychange',h);r();}})):Promise.resolve();
+
+  function make(cubeEl){
+    let S=1; const cubies=[];
+    const size=()=>{S=cubeEl.offsetWidth/3||60;};
+    const draw=(c,Rt)=>{const M=mul(Rt,c.R),t=app(Rt,c.pos).map(k=>k*S);
+      c.el.style.transform=`matrix3d(${M[0][0]},${M[1][0]},${M[2][0]},0,${M[0][1]},${M[1][1]},${M[2][1]},0,${M[0][2]},${M[1][2]},${M[2][2]},0,${t[0]},${t[1]},${t[2]},1)`;};
+    const layout=()=>{size();const h=S/2;cubies.forEach(c=>{[...c.el.children].forEach(d=>{const{n,u,v}=d._f;
+      d.style.width=d.style.height=S+'px';d.style.left=d.style.top=(-h)+'px';
+      d.style.transform=`matrix3d(${u[0]},${u[1]},${u[2]},0,${v[0]},${v[1]},${v[2]},0,${n[0]},${n[1]},${n[2]},0,${n[0]*h},${n[1]*h},${n[2]*h},1)`;});draw(c,I);});};
+    for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){
+      const el=document.createElement('div');el.className='cubie';const home=[x,y,z];
+      FACES.forEach(f=>{const d=document.createElement('div');d.className='face';d._f=f;
+        if(home[0]*f.n[0]+home[1]*f.n[1]+home[2]*f.n[2]===1)d.style.setProperty('--s',COL[f.c]);el.appendChild(d);});
+      cubeEl.appendChild(el);cubies.push({el,pos:home,R:I});}
+    layout(); addEventListener('resize',()=>{clearTimeout(cubeEl._r);cubeEl._r=setTimeout(layout,200);});
+    const turn=(axis,layer,dir,dur)=>new Promise(res=>{
+      const g=cubies.filter(c=>c.pos[axis]===layer),T=dir*Math.PI/2,st=performance.now();
+      const step=now=>{const k=Math.min(1,(now-st)/dur),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+        const Rt=rot(axis,T*e);g.forEach(c=>draw(c,Rt));
+        if(k<1)return requestAnimationFrame(step);
+        const Q=rnd(rot(axis,T));g.forEach(c=>{c.pos=app(Q,c.pos).map(Math.round);c.R=rnd(mul(Q,c.R));draw(c,I);});res();};
+      requestAnimationFrame(step);});
+    return {turn};
+  }
+
+  const cubes=[...document.querySelectorAll('.bgscene .cube')].filter(c=>getComputedStyle(c.parentElement).display!=='none').map(make);
+  if(reduce) return;
+  cubes.forEach(async (cube,i)=>{
+    await sleep(600+i*900);
+    for(;;){                      // scramble, pause, solve, pause, repeat
+      const seq=[];let last=-1;
+      for(let k=0;k<10;k++){let a;do{a=Math.floor(Math.random()*3);}while(a===last);last=a;
+        seq.push([a,Math.random()<.5?-1:1,Math.random()<.5?-1:1]);}
+      for(const [a,l,d] of seq){await waitVisible();await cube.turn(a,l,d,520);await sleep(160);}
+      await sleep(1400);
+      for(const [a,l,d] of seq.slice().reverse()){await waitVisible();await cube.turn(a,l,-d,420);await sleep(120);}
+      await sleep(2200);
+    }
+  });
 })();
 </script>
 </body>
