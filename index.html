@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tshegofatso Mphakathi · QA Engineer</title>
+<meta name="description" content="Tshegofatso Mphakathi: QA engineer and test automation builder based in Gauteng, South Africa.">
+<meta property="og:title" content="Tshegofatso Mphakathi · QA Engineer">
+<meta property="og:description" content="I break software on purpose, then build the tools that test it.">
+<meta name="theme-color" content="#f3f6fb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='27' cy='27' r='17' fill='%23fff' stroke='%2316151d' stroke-width='6'/%3E%3Cpath d='M40 40 L56 56' stroke='%2316151d' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='27' cy='27' r='6' fill='%23ff6b3d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+/* Minimal, light, cartoony: one bug-hunting mascot, thick ink outlines, soft offset shadows, lots of air.
+   Single light look on purpose. */
+:root{
+  --bg:#f3f6fb; --card:#ffffff; --ink:#16151d; --soft:#5d6072;
+  --tomato:#ff6b3d; --mint:#7ad3a8; --sun:#ffd84d; --sky:#8ec5ff;
+  --f-toon:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --line:2.5px solid var(--ink); --pop:5px 5px 0 var(--ink);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 1.02rem/1.65 var(--f-body)}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:inherit}
+a:focus-visible{outline:3px solid var(--tomato);outline-offset:3px;border-radius:8px}
+nav.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0}
+.mark{font:700 1.2rem/1 var(--f-toon);text-decoration:none}
+.mark span{color:var(--tomato)}
+.links{display:flex;gap:18px;flex-wrap:wrap}
+.links a{font:700 .92rem/1 var(--f-body);text-decoration:none;color:var(--soft)}
+.links a:hover{color:var(--ink)}
+@media (max-width:640px){.links{display:none}}
+
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:40px 0 24px}
+.hero>*{min-width:0}
+.hi{display:inline-block;font:700 .85rem/1 var(--f-body);background:var(--sun);border:var(--line);border-radius:999px;padding:7px 12px;transform:rotate(-2deg)}
+h1{margin:18px 0 12px;font:700 clamp(2.5rem,7vw,4.4rem)/1 var(--f-toon);letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--tomato)}
+.lead{margin:0 0 24px;font-size:1.15rem;color:var(--soft);max-width:44ch}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem/1 var(--f-toon);text-decoration:none;padding:13px 18px;border:var(--line);border-radius:14px;background:var(--tomato);color:#fff;box-shadow:var(--pop);transition:transform .15s,box-shadow .15s}
+.btn.light{background:var(--card);color:var(--ink)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.mascot svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.mascot .bob{animation:bob 3s ease-in-out infinite;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-2deg)}}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.mascot{order:-1}.mascot svg{max-width:220px}}
+
+section{padding-top:72px;scroll-margin-top:20px}
+h2{margin:0 0 22px;font:700 clamp(1.6rem,3.6vw,2.2rem)/1.1 var(--f-toon);display:flex;align-items:center;gap:12px}
+h2 i{width:16px;height:16px;border-radius:50%;border:var(--line);background:var(--c)}
+
+.jobs{display:grid;gap:14px}
+.job{display:grid;grid-template-columns:150px 1fr;gap:20px;background:var(--card);border:var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--pop)}
+.job>*{min-width:0}
+.when{font:700 .85rem/1.4 var(--f-body);color:var(--soft)}
+.job h3{margin:0;font:600 1.2rem/1.25 var(--f-toon)}
+.job .org{margin:0 0 6px;color:var(--soft);font-size:.95rem}
+.job p{margin:0;font-size:.97rem}
+.now{display:inline-block;margin-left:6px;font:700 .7rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.08em;background:var(--mint);border:2px solid var(--ink);border-radius:999px;padding:4px 7px;vertical-align:middle}
+@media (max-width:600px){.job{grid-template-columns:1fr;gap:4px}}
+
+.builds{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.build{background:var(--card);border:var(--line);border-radius:18px;padding:20px;box-shadow:var(--pop);display:flex;flex-direction:column;gap:10px;min-width:0}
+.build h3{margin:0;font:600 1.2rem/1.25 var(--f-toon)}
+.build p{margin:0;font-size:.97rem;color:#2d2c38}
+.pill{align-self:flex-start;font:700 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.07em;border:2px solid var(--ink);border-radius:999px;padding:5px 9px;background:var(--c)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px}
+.tags span{font:700 .75rem/1 var(--f-body);color:var(--soft);background:var(--bg);border-radius:999px;padding:6px 9px}
+@media (max-width:720px){.builds{grid-template-columns:1fr}}
+
+.creds{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
+.creds>*{min-width:0}
+.box{background:var(--card);border:var(--line);border-radius:18px;padding:20px;box-shadow:var(--pop)}
+.box h3{margin:0 0 10px;font:600 1.1rem/1.2 var(--f-toon)}
+.box ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.box li{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.96rem}
+.box li small{color:var(--soft);font-weight:700}
+.box + .box{margin-top:18px}
+.dots{display:inline-flex;gap:4px}
+.dots b{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);background:var(--card)}
+.dots b.on{background:var(--tomato)}
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.skills span{font:700 .85rem/1 var(--f-body);background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:8px 12px}
+@media (max-width:720px){.creds{grid-template-columns:1fr}}
+
+.contact{margin-top:72px;text-align:center;background:var(--sun);border:var(--line);border-radius:24px;box-shadow:var(--pop);padding:36px 22px}
+.contact h2{justify-content:center;margin-bottom:8px}
+.contact p{margin:0 auto 20px;max-width:46ch}
+.contact .btn{margin:4px}
+footer{margin-top:36px;text-align:center;color:var(--soft);font-size:.88rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top">
+    <a class="mark" href="#">tshego<span>.</span></a>
+    <div class="links"><a href="#work">Work</a><a href="#builds">Builds</a><a href="#creds">Credentials</a><a href="#contact">Contact</a></div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="hi">Hi, I'm Tshego</span>
+      <h1>I break software <em>on purpose.</em></h1>
+      <p class="lead">QA engineer on telecom billing and subscription systems, and builder of the tools that test them. Three years across regulated iGaming and telecoms. Based in Gauteng, open to on-site, hybrid or remote roles.</p>
+      <div class="btns">
+        <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn light" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn light" href="#builds">See my builds</a>
+      </div>
+    </div>
+    <div class="mascot" aria-hidden="true">
+      <svg viewBox="0 0 320 300">
+        <ellipse cx="160" cy="278" rx="110" ry="12" fill="#16151d" opacity=".12"/>
+        <g class="bob">
+          <g stroke="#16151d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M118 150 L84 128 M118 175 L78 178 M120 200 L88 224 M202 150 L236 128 M202 175 L242 178 M200 200 L232 224" fill="none"/>
+            <ellipse cx="160" cy="178" rx="50" ry="62" fill="#7ad3a8"/>
+            <path d="M160 118 V240" fill="none"/>
+            <circle cx="160" cy="112" r="34" fill="#7ad3a8"/>
+            <path d="M144 82 Q132 52 112 50 M176 82 Q188 52 208 50" fill="none"/>
+            <circle cx="148" cy="108" r="11" fill="#fff"/><circle cx="174" cy="108" r="11" fill="#fff"/>
+            <path d="M150 128 Q160 136 170 128" fill="none"/>
+          </g>
+          <circle cx="150" cy="110" r="4.5" fill="#16151d"/><circle cx="176" cy="110" r="4.5" fill="#16151d"/>
+          <circle cx="136" cy="168" r="7" fill="#ffd84d" stroke="#16151d" stroke-width="3"/><circle cx="182" cy="196" r="6" fill="#ffd84d" stroke="#16151d" stroke-width="3"/>
+        </g>
+        <g stroke="#16151d" stroke-width="7" stroke-linecap="round">
+          <path d="M250 196 L292 246"/>
+          <circle cx="222" cy="160" r="46" fill="#ffffff" fill-opacity=".55"/>
+        </g>
+        <path d="M198 136 Q208 126 222 124" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <g font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#ff6b3d"><text x="40" y="70" transform="rotate(-12 40 70)">bug!</text></g>
+      </svg>
+    </div>
+  </header>
+
+  <section id="work" style="--c:var(--tomato)">
+    <h2><i></i>Work</h2>
+    <div class="jobs">
+      <article class="job"><div class="when">Aug 2026 – now<br>Midrand · hybrid</div><div><h3>QA Engineer <span class="now">Current</span></h3><p class="org">Falcorp Technologies, contracted to Vodacom</p><p>End-to-end, regression and API testing (Postman, SoapUI) across web, mobile, CRM, content management and billing. Release readiness, risk assessments, Oracle SQL checks and production support.</p></div></article>
+      <article class="job"><div class="when">Mar 2025 – Aug 2026<br>Rosebank</div><div><h3>Senior Test Analyst</h3><p class="org">eCOGRA · iGaming testing and certification</p><p>Test design from functional specs; end-to-end, regression, exploratory, smoke and sanity testing; UI/UX testing; JIRA in Agile sprints.</p></div></article>
+      <article class="job"><div class="when">Sep 2023 – Feb 2025<br>Rosebank</div><div><h3>Junior Test Analyst</h3><p class="org">eCOGRA</p><p>Functional, regression and exploratory test execution and defect tracking in JIRA. Promoted to Senior in March 2025.</p></div></article>
+      <article class="job"><div class="when">Jan – Aug 2023</div><div><h3>System Administrator Intern</h3><p class="org">Mphakathi (Sipho) Attorneys</p><p>IT support and system administration for a law firm.</p></div></article>
+    </div>
+  </section>
+
+  <section id="builds" style="--c:var(--mint)">
+    <h2><i></i>Builds</h2>
+    <div class="builds">
+      <article class="build" style="--c:var(--mint)"><span class="pill">Shipped · v1.0</span><h3>SID Test Automation Tool</h3><p>Automates service ID price-plan testing on a telecom staging billing portal: 18 checks per SID covering package, price, tax, subscription lifecycle, microbilling and free trials, with an Excel report and a screenshot of every page. Team dashboard, safety guards, 36 tests and Jenkins CI/CD.</p><div class="tags"><span>Python</span><span>Playwright</span><span>Flask</span><span>pytest</span><span>Jenkins</span></div></article>
+      <article class="build" style="--c:var(--mint)"><span class="pill">Shipped · Microsoft 365</span><h3>WASP Query Tracker</h3><p>Replaced manual Outlook searches for WASP and direct carrier billing investigations. Every email to the QA mailbox becomes a tracked case, with the case reference pulled out, known issues flagged and turnaround time measured.</p><div class="tags"><span>Power Automate</span><span>Office Scripts</span><span>TypeScript</span><span>Excel</span></div></article>
+      <article class="build" style="--c:var(--sky)"><span class="pill">In progress</span><h3>CV Builder</h3><p>An ATS-focused CV tailoring web app for South African job seekers: paste a job description, get a matching CV as a PDF.</p><div class="tags"><span>Web app</span><span>ATS</span><span>PDF</span></div></article>
+      <article class="build" style="--c:var(--sky)"><span class="pill">Research · paper trading</span><h3>Gold &amp; Oil Market Intelligence</h3><p>A four-agent AI research system for gold and WTI oil on MetaTrader 5: two analysts propose, a risk agent can veto, a decision engine calls it, and alerts go to Telegram.</p><div class="tags"><span>AI agents</span><span>MT5</span><span>Telegram</span></div></article>
+    </div>
+  </section>
+
+  <section id="creds" style="--c:var(--sun)">
+    <h2><i></i>Credentials</h2>
+    <div class="creds">
+      <div class="box"><h3>Certifications</h3><ul>
+        <li>ISTQB Foundation Level (CTFL) <small style="color:var(--tomato)">Exam scheduled</small></li>
+        <li>API Test Automation with Postman <small>Applitools · 2026</small></li>
+        <li>Codeless Test Automation with Selenium IDE <small>Applitools · 2026</small></li>
+        <li>Whole Team Approach to Continuous Testing <small>Applitools · 2026</small></li>
+        <li>Technical Support Fundamentals <small>Google · 2023</small></li>
+        <li>Fundamentals of Digital Marketing <small>Google · 2021</small></li>
+      </ul></div>
+      <div>
+        <div class="box"><h3>Education</h3><ul><li>BCom Information Systems <small>North-West University · 2023</small></li></ul></div>
+        <div class="box"><h3>Languages</h3><ul>
+          <li>Setswana <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
+          <li>Sepedi <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
+          <li>isiXhosa <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
+          <li>English <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b></b></span></li>
+          <li>isiZulu <span class="dots"><b class="on"></b><b class="on"></b><b></b><b></b></span></li>
+          <li>Afrikaans <span class="dots"><b class="on"></b><b class="on"></b><b></b><b></b></span></li>
+        </ul></div>
+      </div>
+    </div>
+    <div class="skills"><span>Postman</span><span>SoapUI</span><span>Selenium</span><span>Playwright</span><span>Python</span><span>Java</span><span>C#</span><span>Oracle SQL</span><span>JIRA</span><span>Jenkins</span><span>Git</span><span>Agile</span></div>
+  </section>
+
+  <section id="contact" class="contact" style="--c:var(--tomato)">
+    <h2><i></i>Let's talk</h2>
+    <p>Hiring for QA or test automation? I'd love to hear about it.</p>
+    <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">Message me on LinkedIn ↗</a>
+    <a class="btn light" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub ↗</a>
+  </section>
+
+  <footer>© 2026 Tshegofatso Mphakathi · Kagiso, Gauteng</footer>
+</div>
+</body>
+</html>
