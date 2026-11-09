@@ -6,196 +6,467 @@
 <title>Tshegofatso Mphakathi · QA Engineer</title>
 <meta name="description" content="Tshegofatso Mphakathi: QA engineer and test automation builder based in Gauteng, South Africa.">
 <meta property="og:title" content="Tshegofatso Mphakathi · QA Engineer">
-<meta property="og:description" content="I break software on purpose, then build the tools that test it.">
-<meta name="theme-color" content="#f3f6fb">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='27' cy='27' r='17' fill='%23fff' stroke='%2316151d' stroke-width='6'/%3E%3Cpath d='M40 40 L56 56' stroke='%2316151d' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='27' cy='27' r='6' fill='%23ff6b3d'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap">
+<meta property="og:description" content="I break software on purpose, then build the tools that test it. Scramble the cube, then solve it.">
+<meta name="theme-color" content="#f5f5f7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='6' fill='%23111'/%3E%3Cg%3E%3Crect x='2' y='2' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='11' y='2' width='8' height='8' rx='2' fill='%23ffd500'/%3E%3Crect x='20' y='2' width='8' height='8' rx='2' fill='%23009e60'/%3E%3Crect x='2' y='11' width='8' height='8' rx='2' fill='%23c41e3a'/%3E%3Crect x='11' y='11' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='20' y='11' width='8' height='8' rx='2' fill='%230051ba'/%3E%3Crect x='2' y='20' width='8' height='8' rx='2' fill='%23ff5800'/%3E%3Crect x='11' y='20' width='8' height='8' rx='2' fill='%23009e60'/%3E%3Crect x='20' y='20' width='8' height='8' rx='2' fill='%23ffd500'/%3E%3C/g%3E%3C/svg%3E">
 <style>
-/* Minimal, light, cartoony: one bug-hunting mascot, thick ink outlines, soft offset shadows, lots of air.
-   Single light look on purpose. */
+/* Puzzle-cube portfolio: a playable 3x3 cube in the hero, one face colour per section,
+   and a "faces explored" tracker that fills as you read. Clean system type, light page, black plastic. */
 :root{
-  --bg:#f3f6fb; --card:#ffffff; --ink:#16151d; --soft:#5d6072;
-  --tomato:#ff6b3d; --mint:#7ad3a8; --sun:#ffd84d; --sky:#8ec5ff;
-  --f-toon:"Fredoka","Trebuchet MS",system-ui,sans-serif;
-  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
-  --line:2.5px solid var(--ink); --pop:5px 5px 0 var(--ink);
+  --bg:#f5f5f7; --card:#fff; --ink:#1d1d1f; --soft:#6e6e73; --hair:#e3e3e8; --plastic:#121214;
+  --W:#ffffff; --Y:#ffd500; --R:#c41e3a; --O:#ff5800; --B:#0051ba; --G:#009e60;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --radius:22px; --shadow:0 2px 4px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.07);
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:600 1.02rem/1.65 var(--f-body)}
-.wrap{max-width:980px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:0 64px}
-a{color:inherit}
-a:focus-visible{outline:3px solid var(--tomato);outline-offset:3px;border-radius:8px}
-nav.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0}
-.mark{font:700 1.2rem/1 var(--f-toon);text-decoration:none}
-.mark span{color:var(--tomato)}
-.links{display:flex;gap:18px;flex-wrap:wrap}
-.links a{font:700 .92rem/1 var(--f-body);text-decoration:none;color:var(--soft)}
-.links a:hover{color:var(--ink)}
-@media (max-width:640px){.links{display:none}}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--font);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+a{color:#0066cc;text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid rgba(0,113,227,.6);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 
-.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:40px 0 24px}
+/* ---------- nav ---------- */
+nav.top{position:sticky;top:0;z-index:20;background:rgba(245,245,247,.82);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.07)}
+nav.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;height:56px}
+.mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink)}
+.mark:hover{text-decoration:none}
+.links{display:flex;gap:6px}
+.links a{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);padding:7px 10px;border-radius:999px}
+.links a:hover{background:rgba(0,0,0,.05);text-decoration:none}
+.links a i{width:10px;height:10px;border-radius:3px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.tracker{display:flex;align-items:center;gap:10px;font:600 12px/1 var(--font);color:var(--soft);white-space:nowrap}
+.mini{display:grid;grid-template-columns:repeat(3,9px);gap:2px;padding:3px;background:var(--plastic);border-radius:5px}
+.mini b{width:9px;height:9px;border-radius:2px;background:#3a3a3f;transition:background .4s}
+@media (max-width:900px){.links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:64px 0 24px}
 .hero>*{min-width:0}
-.hi{display:inline-block;font:700 .85rem/1 var(--f-body);background:var(--sun);border:var(--line);border-radius:999px;padding:7px 12px;transform:rotate(-2deg)}
-h1{margin:18px 0 12px;font:700 clamp(2.5rem,7vw,4.4rem)/1 var(--f-toon);letter-spacing:-.01em;text-wrap:balance}
-h1 em{font-style:normal;color:var(--tomato)}
-.lead{margin:0 0 24px;font-size:1.15rem;color:var(--soft);max-width:44ch}
-.btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem/1 var(--f-toon);text-decoration:none;padding:13px 18px;border:var(--line);border-radius:14px;background:var(--tomato);color:#fff;box-shadow:var(--pop);transition:transform .15s,box-shadow .15s}
-.btn.light{background:var(--card);color:var(--ink)}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
-.mascot svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
-.mascot .bob{animation:bob 3s ease-in-out infinite;transform-origin:center}
-@keyframes bob{50%{transform:translateY(-8px) rotate(-2deg)}}
-@media (max-width:720px){.hero{grid-template-columns:1fr}.mascot{order:-1}.mascot svg{max-width:220px}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;font-size:15px;font-weight:600;color:var(--soft)}
+h1{margin:0 0 18px;font-weight:800;font-size:clamp(42px,6.4vw,70px);line-height:1.03;letter-spacing:-.04em;text-wrap:balance}
+h1 .tile{display:inline-block;padding:0 .14em;border-radius:.16em;color:#fff;line-height:1.1}
+h1 .r{background:var(--R)} h1 .b{background:var(--B)} h1 .g{background:var(--G)}
+.lead{margin:0 0 28px;font-size:20px;line-height:1.42;color:var(--soft);max-width:32em}
+.btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;font:500 16px/1 var(--font);padding:13px 20px;border-radius:12px;background:var(--plastic);color:#fff;border:0;cursor:pointer;box-shadow:0 3px 0 #000;transition:transform .12s,box-shadow .12s}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #000}
+.btn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--plastic),0 3px 0 var(--plastic)}
 
-section{padding-top:72px;scroll-margin-top:20px}
-h2{margin:0 0 22px;font:700 clamp(1.6rem,3.6vw,2.2rem)/1.1 var(--f-toon);display:flex;align-items:center;gap:12px}
-h2 i{width:16px;height:16px;border-radius:50%;border:var(--line);background:var(--c)}
+/* ---------- the cube ---------- */
+.play{display:flex;flex-direction:column;align-items:center;gap:18px}
+.scene{--size:300px;width:100%;height:calc(var(--size) * 1.45);display:grid;place-items:center;perspective:1100px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;position:relative}
+.scene:active{cursor:grabbing}
+.scene::after{content:"";position:absolute;bottom:4%;left:50%;width:calc(var(--size)*.9);height:26px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(0,0,0,.18),transparent);pointer-events:none}
+.cube{position:relative;width:var(--size);height:var(--size);transform-style:preserve-3d}
+.cubie{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.face{position:absolute;background:var(--plastic);border-radius:12%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face::after{content:"";position:absolute;inset:7%;border-radius:16%;background:var(--s,transparent);box-shadow:inset 0 -3px 6px rgba(0,0,0,.12),inset 0 2px 3px rgba(255,255,255,.35)}
+.solved-glow .face::after{animation:glow 1.2s ease}
+@keyframes glow{40%{filter:brightness(1.35)}}
 
-.jobs{display:grid;gap:14px}
-.job{display:grid;grid-template-columns:150px 1fr;gap:20px;background:var(--card);border:var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--pop)}
+.pad{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;max-width:400px}
+.pad button{font:700 15px/1 var(--mono);padding:11px 0;border-radius:10px;border:0;cursor:pointer;color:#fff;background:var(--c);box-shadow:0 3px 0 rgba(0,0,0,.45),inset 0 0 0 1px rgba(0,0,0,.12);transition:transform .1s,box-shadow .1s}
+.pad button.light{color:var(--ink)}
+.pad button:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
+.controls .btn{padding:10px 15px;font-size:14px}
+.toggle[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--plastic),0 3px 0 var(--plastic)}
+.hud{display:flex;gap:18px;font:600 13px/1 var(--mono);color:var(--soft)}
+.hud b{color:var(--ink)}
+.hint{margin:0;font-size:13px;color:var(--soft);text-align:center;max-width:36em}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:36px;gap:20px}.scene{--size:min(240px,62vw)}}
+
+/* ---------- sections ---------- */
+section{padding-top:96px;scroll-margin-top:64px}
+.head{display:flex;align-items:center;gap:16px;margin:0 0 30px}
+.sticker{flex:none;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:46px;height:46px;padding:4px;background:var(--plastic);border-radius:9px}
+.sticker i{border-radius:3px;background:var(--c)}
+.head p{margin:0 0 2px;font:600 13px/1.2 var(--mono);color:var(--soft);text-transform:uppercase;letter-spacing:.06em}
+h2{margin:0;font-weight:800;font-size:clamp(32px,4.6vw,46px);line-height:1.05;letter-spacing:-.035em}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* about (white face) */
+.about{padding:34px 36px}
+.about p{max-width:46em}
+.about>*{min-width:0}
+.about h3{margin:0 0 10px;font-size:26px;letter-spacing:-.03em}
+.about p{margin:0 0 14px;color:#424245}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 0}
+.facts div{background:var(--bg);border-radius:14px;padding:14px}
+.facts b{display:block;font-size:24px;letter-spacing:-.03em}
+.facts span{font-size:13px;color:var(--soft)}
+@media (max-width:760px){.about{padding:24px}}
+
+/* work (green) */
+.jobs{overflow:hidden}
+.job{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:26px 30px;border-left:6px solid transparent}
+.job:first-child{border-left-color:var(--G)}
+.job + .job{border-top:1px solid #ececf0}
 .job>*{min-width:0}
-.when{font:700 .85rem/1.4 var(--f-body);color:var(--soft)}
-.job h3{margin:0;font:600 1.2rem/1.25 var(--f-toon)}
-.job .org{margin:0 0 6px;color:var(--soft);font-size:.95rem}
-.job p{margin:0;font-size:.97rem}
-.now{display:inline-block;margin-left:6px;font:700 .7rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.08em;background:var(--mint);border:2px solid var(--ink);border-radius:999px;padding:4px 7px;vertical-align:middle}
-@media (max-width:600px){.job{grid-template-columns:1fr;gap:4px}}
+.when{font:500 13px/1.5 var(--mono);color:var(--soft)}
+.job h3{margin:0;font-size:21px;font-weight:650;letter-spacing:-.02em}
+.job .org{margin:2px 0 8px;color:var(--soft);font-size:15px}
+.job p{margin:0;font-size:16px}
+.now{display:inline-block;margin-left:8px;font:700 11px/1 var(--font);color:#fff;background:var(--G);border-radius:6px;padding:4px 7px;vertical-align:4px;letter-spacing:.04em;text-transform:uppercase}
+@media (max-width:620px){.job{grid-template-columns:1fr;gap:6px;padding:22px}}
 
+/* builds (red) */
 .builds{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.build{background:var(--card);border:var(--line);border-radius:18px;padding:20px;box-shadow:var(--pop);display:flex;flex-direction:column;gap:10px;min-width:0}
-.build h3{margin:0;font:600 1.2rem/1.25 var(--f-toon)}
-.build p{margin:0;font-size:.97rem;color:#2d2c38}
-.pill{align-self:flex-start;font:700 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.07em;border:2px solid var(--ink);border-radius:999px;padding:5px 9px;background:var(--c)}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px}
-.tags span{font:700 .75rem/1 var(--f-body);color:var(--soft);background:var(--bg);border-radius:999px;padding:6px 9px}
-@media (max-width:720px){.builds{grid-template-columns:1fr}}
+.build{padding:28px;display:flex;flex-direction:column;gap:10px;min-width:0;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.build::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--c)}
+.build:hover{transform:translateY(-3px);box-shadow:0 4px 8px rgba(0,0,0,.05),0 22px 44px rgba(0,0,0,.1)}
+.build .tag{font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.build h3{margin:0;font-size:23px;font-weight:650;letter-spacing:-.025em;line-height:1.2}
+.build p{margin:0;font-size:16px;color:#424245}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
+.visit{font-size:15px;font-weight:600;margin-top:4px}
+.build[style*="--W"]::before{background:#fff;box-shadow:inset 0 -1px 0 #ddd}
+.tags span{font:500 12px/1 var(--mono);color:var(--ink);background:var(--bg);border-radius:6px;padding:6px 9px}
+@media (max-width:760px){.builds{grid-template-columns:1fr}.build{padding:24px}}
 
-.creds{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
-.creds>*{min-width:0}
-.box{background:var(--card);border:var(--line);border-radius:18px;padding:20px;box-shadow:var(--pop)}
-.box h3{margin:0 0 10px;font:600 1.1rem/1.2 var(--f-toon)}
-.box ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
-.box li{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.96rem}
-.box li small{color:var(--soft);font-weight:700}
-.box + .box{margin-top:18px}
-.dots{display:inline-flex;gap:4px}
-.dots b{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);background:var(--card)}
-.dots b.on{background:var(--tomato)}
-.skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.skills span{font:700 .85rem/1 var(--f-body);background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:8px 12px}
-@media (max-width:720px){.creds{grid-template-columns:1fr}}
+/* credentials (blue) + skills/languages (orange) */
+.two{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.two>*{min-width:0}
+.box{padding:26px 28px}
+.box h3{margin:0 0 12px;font-size:19px;font-weight:650;letter-spacing:-.02em}
+.box ul{list-style:none;margin:0;padding:0}
+.box li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:16px;padding:10px 0}
+.box li + li{border-top:1px solid #ececf0}
+.box li small{color:var(--soft);font-size:14px}
+.box li small.soon{color:var(--B);font-weight:600}
+.stack{display:grid;gap:18px;align-content:start}
+.exp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.exp div{background:var(--bg);border-radius:14px;padding:16px 16px 16px 18px;border-left:5px solid var(--c)}
+.exp h4{margin:0 0 4px;font-size:16px;letter-spacing:-.02em}
+.exp p{margin:0;font-size:14px;line-height:1.45;color:#424245}
+@media (max-width:560px){.exp{grid-template-columns:1fr}}
+.stars{color:#e8a400;font-size:16px;letter-spacing:2px;white-space:nowrap}
+.stars .off{color:#d6d6db}
+.skills{display:flex;flex-wrap:wrap;gap:8px}
+.skills span{display:inline-flex;align-items:center;gap:8px;font-size:15px;background:var(--bg);border-radius:10px;padding:9px 13px}
+.skills span::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--O)}
+.skills span:nth-child(6n+2)::before{background:var(--B)}
+.skills span:nth-child(6n+3)::before{background:var(--G)}
+.skills span:nth-child(6n+4)::before{background:var(--R)}
+.skills span:nth-child(6n+5)::before{background:var(--Y)}
+.skills span:nth-child(6n)::before{background:#fff;box-shadow:inset 0 0 0 1px #bbb}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
 
-.contact{margin-top:72px;text-align:center;background:var(--sun);border:var(--line);border-radius:24px;box-shadow:var(--pop);padding:36px 22px}
-.contact h2{justify-content:center;margin-bottom:8px}
-.contact p{margin:0 auto 20px;max-width:46ch}
-.contact .btn{margin:4px}
-footer{margin-top:36px;text-align:center;color:var(--soft);font-size:.88rem}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* contact (yellow) */
+.contact{margin-top:96px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;background:var(--Y);border-radius:28px;padding:48px}
+.contact h2{color:var(--ink)}
+.contact p{margin:10px 0 24px;font-size:19px;color:#3a3200;max-width:30em}
+.contact .bigtile{display:grid;grid-template-columns:repeat(3,44px);gap:5px;padding:8px;background:var(--plastic);border-radius:14px;transform:rotate(-8deg)}
+.contact .bigtile i{height:44px;border-radius:8px;background:var(--Y)}
+@media (max-width:700px){.contact{grid-template-columns:1fr;padding:34px 24px}.contact .bigtile{display:none}}
+footer{margin:40px 0 0;padding:20px 0 48px;border-top:1px solid #d2d2d7;color:var(--soft);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+.toast{position:fixed;left:50%;bottom:24px;z-index:30;transform:translate(-50%,140%);display:flex;align-items:center;gap:12px;max-width:calc(100vw - 32px);background:var(--plastic);color:#fff;border-radius:16px;padding:14px 18px;font-size:15px;box-shadow:0 20px 40px rgba(0,0,0,.3);transition:transform .45s cubic-bezier(.2,.9,.3,1.2)}
+.toast.show{transform:translate(-50%,0)}
+.toast .mini{flex:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <nav class="top">
-    <a class="mark" href="#">tshego<span>.</span></a>
-    <div class="links"><a href="#work">Work</a><a href="#builds">Builds</a><a href="#creds">Credentials</a><a href="#contact">Contact</a></div>
-  </nav>
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="#top"><span class="mini" aria-hidden="true"><b style="background:var(--W)"></b><b style="background:var(--G)"></b><b style="background:var(--R)"></b><b style="background:var(--B)"></b><b style="background:var(--W)"></b><b style="background:var(--O)"></b><b style="background:var(--Y)"></b><b style="background:var(--R)"></b><b style="background:var(--G)"></b></span>Tshego</a>
+    <div class="links">
+      <a href="#about" style="--c:var(--W)"><i></i>About</a>
+      <a href="#work" style="--c:var(--G)"><i></i>Work</a>
+      <a href="#builds" style="--c:var(--R)"><i></i>Builds</a>
+      <a href="#creds" style="--c:var(--B)"><i></i>Credentials</a>
+      <a href="#skills" style="--c:var(--O)"><i></i>Skills</a>
+      <a href="#contact" style="--c:var(--Y)"><i></i>Contact</a>
+    </div>
+    <div class="tracker" title="Each section is one face of the cube"><span class="mini" id="trackMini" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></span><span id="trackText">0/6 faces</span></div>
+  </div>
+</nav>
 
+<main class="wrap" id="top">
   <header class="hero">
     <div>
-      <span class="hi">Hi, I'm Tshego</span>
-      <h1>I break software <em>on purpose.</em></h1>
-      <p class="lead">QA engineer on telecom billing and subscription systems, and builder of the tools that test them. Three years across regulated iGaming and telecoms. Based in Gauteng, open to on-site, hybrid or remote roles.</p>
+      <p class="eyebrow">Tshegofatso Mphakathi · QA Engineer</p>
+      <h1>I scramble software, then <span class="tile g">solve</span> it.</h1>
+      <p class="lead">Testing is a puzzle: find every way a system can fall apart, then prove it holds together. I do that on telecom billing and subscription systems, and build the tools that test them. I design websites too.</p>
       <div class="btns">
-        <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a class="btn light" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="btn light" href="#builds">See my builds</a>
+        <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+        <a class="btn ghost" href="#about">Explore all six faces ↓</a>
       </div>
     </div>
-    <div class="mascot" aria-hidden="true">
-      <svg viewBox="0 0 320 300">
-        <ellipse cx="160" cy="278" rx="110" ry="12" fill="#16151d" opacity=".12"/>
-        <g class="bob">
-          <g stroke="#16151d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M118 150 L84 128 M118 175 L78 178 M120 200 L88 224 M202 150 L236 128 M202 175 L242 178 M200 200 L232 224" fill="none"/>
-            <ellipse cx="160" cy="178" rx="50" ry="62" fill="#7ad3a8"/>
-            <path d="M160 118 V240" fill="none"/>
-            <circle cx="160" cy="112" r="34" fill="#7ad3a8"/>
-            <path d="M144 82 Q132 52 112 50 M176 82 Q188 52 208 50" fill="none"/>
-            <circle cx="148" cy="108" r="11" fill="#fff"/><circle cx="174" cy="108" r="11" fill="#fff"/>
-            <path d="M150 128 Q160 136 170 128" fill="none"/>
-          </g>
-          <circle cx="150" cy="110" r="4.5" fill="#16151d"/><circle cx="176" cy="110" r="4.5" fill="#16151d"/>
-          <circle cx="136" cy="168" r="7" fill="#ffd84d" stroke="#16151d" stroke-width="3"/><circle cx="182" cy="196" r="6" fill="#ffd84d" stroke="#16151d" stroke-width="3"/>
-        </g>
-        <g stroke="#16151d" stroke-width="7" stroke-linecap="round">
-          <path d="M250 196 L292 246"/>
-          <circle cx="222" cy="160" r="46" fill="#ffffff" fill-opacity=".55"/>
-        </g>
-        <path d="M198 136 Q208 126 222 124" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/>
-        <g font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#ff6b3d"><text x="40" y="70" transform="rotate(-12 40 70)">bug!</text></g>
-      </svg>
+
+    <div class="play">
+      <div class="scene" id="scene" aria-label="Interactive 3D puzzle cube. Drag to rotate the view; use the buttons below to turn faces.">
+        <div class="cube" id="cube"></div>
+      </div>
+      <div class="pad" id="pad" role="group" aria-label="Turn a face">
+        <button data-m="U" class="light" style="--c:var(--W)" title="Up face (white)">U</button>
+        <button data-m="F" style="--c:var(--G)" title="Front face (green)">F</button>
+        <button data-m="R" style="--c:var(--R)" title="Right face (red)">R</button>
+        <button data-m="B" style="--c:var(--B)" title="Back face (blue)">B</button>
+        <button data-m="L" style="--c:var(--O)" title="Left face (orange)">L</button>
+        <button data-m="D" class="light" style="--c:var(--Y)" title="Down face (yellow)">D</button>
+      </div>
+      <div class="controls">
+        <button class="btn ghost toggle" id="prime" aria-pressed="false" title="Reverse: turn faces anticlockwise" aria-label="Reverse turn direction">↺</button>
+        <button class="btn" id="scramble">Scramble</button>
+        <button class="btn" id="solve">Solve</button>
+        <button class="btn ghost" id="reset">Reset</button>
+      </div>
+      <div class="hud" aria-live="polite"><span>Moves <b id="moves">0</b></span><span>Time <b id="time">0:00</b></span><span id="status">Solved</span></div>
+      <p class="hint">Drag to look around · keys U F R B L D, Shift to reverse</p>
     </div>
   </header>
 
-  <section id="work" style="--c:var(--tomato)">
-    <h2><i></i>Work</h2>
-    <div class="jobs">
-      <article class="job"><div class="when">Aug 2026 – now<br>Midrand · hybrid</div><div><h3>QA Engineer <span class="now">Current</span></h3><p class="org">Falcorp Technologies, contracted to Vodacom</p><p>End-to-end, regression and API testing (Postman, SoapUI) across web, mobile, CRM, content management and billing. Release readiness, risk assessments, Oracle SQL checks and production support.</p></div></article>
+  <section id="about" data-face="W">
+    <div class="head"><span class="sticker" aria-hidden="true" style="--c:#fff"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p>Face 1 · White</p><h2>About.</h2></div></div>
+    <div class="card about">
+      <div>
+        <h3>Hi, I'm Tshego.</h3>
+        <p>QA engineer on telecom billing and subscription systems, and builder of the tools that test them. I also design websites. Three years across regulated iGaming and telecoms: end-to-end, regression, exploratory and API testing, release readiness and production support.</p>
+        <p>Based in Kagiso, Gauteng. Open to on-site, hybrid or remote roles.</p>
+        <div class="btns">
+          <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn ghost" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="facts"><div><b>3 yrs</b><span>in software testing</span></div><div><b>2</b><span>regulated industries</span></div><div><b>3</b><span>builds live, incl. a web store</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-face="G">
+    <div class="head"><span class="sticker" aria-hidden="true" style="--c:var(--G)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p>Face 2 · Green</p><h2>Work.</h2></div></div>
+    <div class="card jobs">
+      <article class="job"><div class="when">Aug 2026 – now<br>Midrand · hybrid</div><div><h3>QA Engineer<span class="now">Current</span></h3><p class="org">Falcorp Technologies, contracted to Vodacom</p><p>End-to-end, regression and API testing (Postman, SoapUI) across web, mobile, CRM, content management and billing. Release readiness, risk assessments, Oracle SQL checks and production support.</p></div></article>
       <article class="job"><div class="when">Mar 2025 – Aug 2026<br>Rosebank</div><div><h3>Senior Test Analyst</h3><p class="org">eCOGRA · iGaming testing and certification</p><p>Test design from functional specs; end-to-end, regression, exploratory, smoke and sanity testing; UI/UX testing; JIRA in Agile sprints.</p></div></article>
       <article class="job"><div class="when">Sep 2023 – Feb 2025<br>Rosebank</div><div><h3>Junior Test Analyst</h3><p class="org">eCOGRA</p><p>Functional, regression and exploratory test execution and defect tracking in JIRA. Promoted to Senior in March 2025.</p></div></article>
       <article class="job"><div class="when">Jan – Aug 2023</div><div><h3>System Administrator Intern</h3><p class="org">Mphakathi (Sipho) Attorneys</p><p>IT support and system administration for a law firm.</p></div></article>
     </div>
   </section>
 
-  <section id="builds" style="--c:var(--mint)">
-    <h2><i></i>Builds</h2>
+  <section id="builds" data-face="R">
+    <div class="head"><span class="sticker" aria-hidden="true" style="--c:var(--R)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p>Face 3 · Red</p><h2>Builds.</h2></div></div>
     <div class="builds">
-      <article class="build" style="--c:var(--mint)"><span class="pill">Shipped · v1.0</span><h3>SID Test Automation Tool</h3><p>Automates service ID price-plan testing on a telecom staging billing portal: 18 checks per SID covering package, price, tax, subscription lifecycle, microbilling and free trials, with an Excel report and a screenshot of every page. Team dashboard, safety guards, 36 tests and Jenkins CI/CD.</p><div class="tags"><span>Python</span><span>Playwright</span><span>Flask</span><span>pytest</span><span>Jenkins</span></div></article>
-      <article class="build" style="--c:var(--mint)"><span class="pill">Shipped · Microsoft 365</span><h3>WASP Query Tracker</h3><p>Replaced manual Outlook searches for WASP and direct carrier billing investigations. Every email to the QA mailbox becomes a tracked case, with the case reference pulled out, known issues flagged and turnaround time measured.</p><div class="tags"><span>Power Automate</span><span>Office Scripts</span><span>TypeScript</span><span>Excel</span></div></article>
-      <article class="build" style="--c:var(--sky)"><span class="pill">In progress</span><h3>CV Builder</h3><p>An ATS-focused CV tailoring web app for South African job seekers: paste a job description, get a matching CV as a PDF.</p><div class="tags"><span>Web app</span><span>ATS</span><span>PDF</span></div></article>
-      <article class="build" style="--c:var(--sky)"><span class="pill">Research · paper trading</span><h3>Gold &amp; Oil Market Intelligence</h3><p>A four-agent AI research system for gold and WTI oil on MetaTrader 5: two analysts propose, a risk agent can veto, a decision engine calls it, and alerts go to Telegram.</p><div class="tags"><span>AI agents</span><span>MT5</span><span>Telegram</span></div></article>
+      <article class="card build" style="--c:var(--R)"><span class="tag">Shipped · v1.0</span><h3>SID Test Automation Tool</h3><p>Automates service ID price-plan testing on a telecom staging billing portal: 18 checks per SID covering package, price, tax, subscription lifecycle, microbilling and free trials, with an Excel report and a screenshot of every page. Team dashboard, safety guards, 36 tests and Jenkins CI/CD.</p><div class="tags"><span>Python</span><span>Playwright</span><span>Flask</span><span>pytest</span><span>Jenkins</span></div></article>
+      <article class="card build" style="--c:var(--O)"><span class="tag">Shipped · Microsoft 365</span><h3>WASP Query Tracker</h3><p>Replaced manual Outlook searches for WASP and direct carrier billing investigations. Every email to the QA mailbox becomes a tracked case, with the case reference pulled out, known issues flagged and turnaround time measured.</p><div class="tags"><span>Power Automate</span><span>Office Scripts</span><span>TypeScript</span><span>Excel</span></div></article>
+      <article class="card build" style="--c:var(--Y)"><span class="tag">Live · web design</span><h3>Aftrform: perfume store</h3><p>Designed and built the online store for my fragrance brand: product catalogue and checkout, gift cards, member accounts, forms and payment links, an Instagram feed and the custom domain. Tested end to end before launch.</p><div class="tags"><span>Wix Studio</span><span>E-commerce</span><span>Responsive design</span><span>SEO</span></div><a class="visit" href="https://www.aftrform.com/" target="_blank" rel="noopener">Visit aftrform.com ↗</a></article>
+      <article class="card build" style="--c:var(--W)"><span class="tag">Live · this site</span><h3>Playable cube portfolio</h3><p>Hand-coded with no framework: a 3D cube built from 27 pieces with CSS transforms, face turns, scramble and auto-solve in plain JavaScript, checked at desktop and phone sizes with Playwright.</p><div class="tags"><span>HTML</span><span>CSS 3D</span><span>JavaScript</span><span>Playwright</span><span>GitHub Pages</span></div></article>
+      <article class="card build" style="--c:var(--B)"><span class="tag">In progress</span><h3>CV Builder</h3><p>An ATS-focused CV tailoring web app for South African job seekers: paste a job description, get a matching CV as a PDF.</p><div class="tags"><span>Web app</span><span>ATS</span><span>PDF</span></div></article>
+      <article class="card build" style="--c:var(--G)"><span class="tag">Research · paper trading</span><h3>Gold &amp; Oil Market Intelligence</h3><p>A four-agent AI research system for gold and WTI oil on MetaTrader 5: two analysts propose, a risk agent can veto, a decision engine calls it, and alerts go to Telegram.</p><div class="tags"><span>AI agents</span><span>MT5</span><span>Telegram</span></div></article>
     </div>
   </section>
 
-  <section id="creds" style="--c:var(--sun)">
-    <h2><i></i>Credentials</h2>
-    <div class="creds">
-      <div class="box"><h3>Certifications</h3><ul>
-        <li>ISTQB Foundation Level (CTFL) <small style="color:var(--tomato)">Exam scheduled</small></li>
+  <section id="creds" data-face="B">
+    <div class="head"><span class="sticker" aria-hidden="true" style="--c:var(--B)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p>Face 4 · Blue</p><h2>Credentials.</h2></div></div>
+    <div class="two">
+      <div class="card box"><h3>Certifications</h3><ul>
+        <li>ISTQB Foundation Level (CTFL) <small class="soon">Exam scheduled</small></li>
         <li>API Test Automation with Postman <small>Applitools · 2026</small></li>
         <li>Codeless Test Automation with Selenium IDE <small>Applitools · 2026</small></li>
         <li>Whole Team Approach to Continuous Testing <small>Applitools · 2026</small></li>
         <li>Technical Support Fundamentals <small>Google · 2023</small></li>
         <li>Fundamentals of Digital Marketing <small>Google · 2021</small></li>
       </ul></div>
-      <div>
-        <div class="box"><h3>Education</h3><ul><li>BCom Information Systems <small>North-West University · 2023</small></li></ul></div>
-        <div class="box"><h3>Languages</h3><ul>
-          <li>Setswana <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
-          <li>Sepedi <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
-          <li>isiXhosa <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span></li>
-          <li>English <span class="dots"><b class="on"></b><b class="on"></b><b class="on"></b><b></b></span></li>
-          <li>isiZulu <span class="dots"><b class="on"></b><b class="on"></b><b></b><b></b></span></li>
-          <li>Afrikaans <span class="dots"><b class="on"></b><b class="on"></b><b></b><b></b></span></li>
-        </ul></div>
+      <div class="card box"><h3>Education</h3><ul><li>BCom Information Systems <small>North-West University · 2023</small></li><li>NQF level 7 <small>2020 – 2023</small></li></ul></div>
+    </div>
+  </section>
+
+  <section id="skills" data-face="O">
+    <div class="head"><span class="sticker" aria-hidden="true" style="--c:var(--O)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p>Face 5 · Orange</p><h2>Skills &amp; expertise.</h2></div></div>
+    <div class="two">
+      <div class="card box"><h3>Expertise</h3>
+        <div class="exp">
+          <div style="--c:var(--G)"><h4>Software testing</h4><p>Functional, end-to-end, regression, exploratory, smoke and sanity testing. Test design from specs, UAT support, release readiness and risk assessment.</p></div>
+          <div style="--c:var(--R)"><h4>API and data</h4><p>REST and SOAP testing with Postman and SoapUI. Oracle SQL and SQL Server checks on billing and subscription data.</p></div>
+          <div style="--c:var(--B)"><h4>Test automation</h4><p>Selenium, Playwright and pytest suites, Jenkins and GitHub Actions pipelines, Power Automate workflows.</p></div>
+          <div style="--c:var(--O)"><h4>Website design</h4><p>Responsive sites and online stores on Wix Studio and hand-coded HTML, CSS and JavaScript, from layout to checkout to launch.</p></div>
+        </div>
+        <h3 style="margin-top:22px">Tools</h3>
+        <div class="skills"><span>Postman</span><span>SoapUI</span><span>Selenium</span><span>Playwright</span><span>Python</span><span>Java</span><span>C#</span><span>Oracle SQL</span><span>SQL Server</span><span>JIRA</span><span>Jenkins</span><span>Git</span><span>GitHub Actions</span><span>Power Automate</span><span>Wix Studio</span><span>HTML / CSS / JS</span><span>Android / iOS</span><span>Linux</span><span>Agile</span></div>
+      </div>
+      <div class="card box"><h3>Languages</h3><ul>
+        <li>English <span class="stars" role="img" aria-label="4 out of 5">★★★★<span class="off">★</span></span></li>
+        <li>Setswana <span class="stars" role="img" aria-label="3 out of 5">★★★<span class="off">★★</span></span></li>
+        <li>Sepedi <span class="stars" role="img" aria-label="3 out of 5">★★★<span class="off">★★</span></span></li>
+        <li>isiXhosa <span class="stars" role="img" aria-label="3 out of 5">★★★<span class="off">★★</span></span></li>
+        <li>isiZulu <span class="stars" role="img" aria-label="3 out of 5">★★★<span class="off">★★</span></span></li>
+        <li>Afrikaans <span class="stars" role="img" aria-label="3 out of 5">★★★<span class="off">★★</span></span></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" data-face="Y">
+    <div>
+      <div class="head" style="margin-bottom:0"><span class="sticker" aria-hidden="true" style="--c:var(--Y)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div><p style="color:#5c5000">Face 6 · Yellow</p><h2>Let's talk.</h2></div></div>
+      <p>Hiring for QA or test automation? That's the last face. I'd love to hear about it.</p>
+      <div class="btns">
+        <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">Message me on LinkedIn</a>
+        <a class="btn ghost" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
-    <div class="skills"><span>Postman</span><span>SoapUI</span><span>Selenium</span><span>Playwright</span><span>Python</span><span>Java</span><span>C#</span><span>Oracle SQL</span><span>JIRA</span><span>Jenkins</span><span>Git</span><span>Agile</span></div>
+    <div class="bigtile" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </section>
 
-  <section id="contact" class="contact" style="--c:var(--tomato)">
-    <h2><i></i>Let's talk</h2>
-    <p>Hiring for QA or test automation? I'd love to hear about it.</p>
-    <a class="btn" href="https://www.linkedin.com/in/tshegofatso-mphakathi/" target="_blank" rel="noopener">Message me on LinkedIn ↗</a>
-    <a class="btn light" href="https://github.com/tscodes2001" target="_blank" rel="noopener">GitHub ↗</a>
-  </section>
+  <footer><span>© 2026 Tshegofatso Mphakathi</span><span>Kagiso, Gauteng · South Africa</span></footer>
+</main>
 
-  <footer>© 2026 Tshegofatso Mphakathi · Kagiso, Gauteng</footer>
-</div>
+<div class="toast" id="toast" role="status"><span class="mini" aria-hidden="true"><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b><b style="background:var(--Y)"></b></span><span id="toastText"></span></div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COL = {W:'#ffffff', Y:'#ffd500', R:'#c41e3a', O:'#ff5800', B:'#0051ba', G:'#009e60'};
+  // CSS axes: x right, y down, z toward the viewer. Face normal -> colour.
+  const FACES = [
+    {n:[0,-1,0], c:'W', u:[1,0,0], v:[0,0,1]},   // Up
+    {n:[0,1,0],  c:'Y', u:[1,0,0], v:[0,0,-1]},  // Down
+    {n:[0,0,1],  c:'G', u:[1,0,0], v:[0,1,0]},   // Front
+    {n:[0,0,-1], c:'B', u:[-1,0,0], v:[0,1,0]},  // Back
+    {n:[1,0,0],  c:'R', u:[0,0,-1], v:[0,1,0]},  // Right
+    {n:[-1,0,0], c:'O', u:[0,0,1], v:[0,1,0]}    // Left
+  ];
+  // axis index, layer, and the turn that is clockwise when you look at that face
+  const MOVES = {U:[1,-1,-1], D:[1,1,1], F:[2,1,1], B:[2,-1,-1], R:[0,1,1], L:[0,-1,-1]};
+
+  const scene = document.getElementById('scene'), cubeEl = document.getElementById('cube');
+  const I = [[1,0,0],[0,1,0],[0,0,1]];
+  const mul = (A,B) => A.map((r,i)=>[0,1,2].map(j=>r[0]*B[0][j]+r[1]*B[1][j]+r[2]*B[2][j]));
+  const app = (A,v) => A.map(r=>r[0]*v[0]+r[1]*v[1]+r[2]*v[2]);
+  const rot = (axis,a) => { const c=Math.cos(a), s=Math.sin(a);
+    return axis===0?[[1,0,0],[0,c,-s],[0,s,c]]:axis===1?[[c,0,s],[0,1,0],[-s,0,c]]:[[c,-s,0],[s,c,0],[0,0,1]]; };
+  const round = M => M.map(r=>r.map(Math.round));
+
+  let S = 100, cubies = [];
+  function sizeVars(){ S = cubeEl.getBoundingClientRect().width / 3 || 100; }
+
+  function build(){
+    cubeEl.innerHTML=''; cubies=[]; sizeVars();
+    for (let x=-1;x<=1;x++) for (let y=-1;y<=1;y++) for (let z=-1;z<=1;z++){
+      const el=document.createElement('div'); el.className='cubie';
+      const home=[x,y,z]; const stickers=[];
+      FACES.forEach(f=>{
+        const d=document.createElement('div'); d.className='face';
+        const outer = home[0]*f.n[0]+home[1]*f.n[1]+home[2]*f.n[2] === 1;
+        if (outer){ d.style.setProperty('--s', COL[f.c]); stickers.push(f.n); }
+        el.appendChild(d); d._f=f;
+      });
+      cubeEl.appendChild(el);
+      cubies.push({el, pos:home.slice(), R:I.map(r=>r.slice()), stickers});
+    }
+    layout(); cubies.forEach(c=>draw(c, I));
+  }
+  function layout(){
+    const h=S/2;
+    cubies.forEach(c=>[...c.el.children].forEach(d=>{
+      const {n,u,v}=d._f;
+      d.style.width=d.style.height=S+'px'; d.style.left=d.style.top=(-h)+'px';
+      d.style.transform=`matrix3d(${u[0]},${u[1]},${u[2]},0,${v[0]},${v[1]},${v[2]},0,${n[0]},${n[1]},${n[2]},0,${n[0]*h},${n[1]*h},${n[2]*h},1)`;
+    }));
+  }
+  function draw(c, Rt){
+    const M=mul(Rt,c.R), t=app(Rt,c.pos).map(k=>k*S);
+    c.el.style.transform=`matrix3d(${M[0][0]},${M[1][0]},${M[2][0]},0,${M[0][1]},${M[1][1]},${M[2][1]},0,${M[0][2]},${M[1][2]},${M[2][2]},0,${t[0]},${t[1]},${t[2]},1)`;
+  }
+
+  // ----- view (drag to orbit) -----
+  let vx=-26, vy=-36;
+  const setView=()=>{ cubeEl.style.transform=`rotateX(${vx}deg) rotateY(${vy}deg)`; };
+  setView();
+  let drag=null;
+  scene.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY,vx,vy,id:e.pointerId}; });
+  addEventListener('pointermove',e=>{ if(!drag||e.pointerId!==drag.id) return;
+    vy=drag.vy+(e.clientX-drag.x)*0.45;
+    if(e.pointerType==='mouse') vx=Math.max(-85,Math.min(85,drag.vx-(e.clientY-drag.y)*0.45));
+    setView(); });
+  addEventListener('pointerup',()=>drag=null); addEventListener('pointercancel',()=>drag=null);
+
+  // ----- moves -----
+  const queue=[]; let busy=false, history=[], moveCount=0, timer=null, t0=0, scrambled=false;
+  const $=id=>document.getElementById(id);
+  function turn(axis,layer,dir,dur){
+    return new Promise(res=>{
+      const group=cubies.filter(c=>c.pos[axis]===layer), target=dir*Math.PI/2;
+      const start=performance.now();
+      const step=now=>{
+        const k=Math.min(1,(now-start)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+        const Rt=rot(axis,target*e); group.forEach(c=>draw(c,Rt));
+        if(k<1) return requestAnimationFrame(step);
+        const Q=round(rot(axis,target));
+        group.forEach(c=>{ c.pos=app(Q,c.pos).map(Math.round); c.R=round(mul(Q,c.R)); draw(c,I); });
+        res();
+      };
+      if(dur<=0){ step(start+1); } else requestAnimationFrame(step);
+    });
+  }
+  async function run(){
+    if(busy) return; busy=true;
+    while(queue.length){ const m=queue.shift(); await turn(m.axis,m.layer,m.dir,reduce?0:m.dur); if(m.after) m.after(); }
+    busy=false;
+  }
+  function move(name,prime,{dur=230,record=true,user=false}={}){
+    const [axis,layer,cw]=MOVES[name];
+    queue.push({axis,layer,dir:prime?-cw:cw,dur,after:()=>{
+      if(record) history.push([name,prime]);
+      if(user){ moveCount++; $('moves').textContent=moveCount; if(scrambled&&!timer) startTimer(); }
+      checkSolved(user);
+    }});
+    run();
+  }
+  const isSolved=()=>cubies.every(c=>c.stickers.every(n=>{const w=app(c.R,n); return w[0]===n[0]&&w[1]===n[1]&&w[2]===n[2];}));
+  function checkSolved(user){
+    const ok=isSolved();
+    $('status').textContent= ok?'Solved':'Scrambled';
+    if(ok){ history=[]; if(scrambled){ scrambled=false; stopTimer();
+      cubeEl.classList.remove('solved-glow'); void cubeEl.offsetWidth; cubeEl.classList.add('solved-glow');
+      toast(user?`Solved in ${moveCount} moves and ${$('time').textContent}. You'd make a good tester.`:'Solved. Every scramble has a way back, the same way every bug has a root cause.'); } }
+  }
+  function startTimer(){ t0=Date.now(); timer=setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000); $('time').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; },250); }
+  function stopTimer(){ clearInterval(timer); timer=null; }
+  function resetHud(){ moveCount=0; $('moves').textContent='0'; stopTimer(); $('time').textContent='0:00'; }
+
+  let primeOn=false;
+  $('prime').addEventListener('click',e=>{ primeOn=!primeOn; e.currentTarget.setAttribute('aria-pressed',primeOn); });
+  $('pad').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) move(b.dataset.m,primeOn,{user:true}); });
+  addEventListener('keydown',e=>{
+    if(e.target.closest('input,textarea')||e.metaKey||e.ctrlKey||e.altKey) return;
+    const k=e.key.toUpperCase(); if(MOVES[k]){ move(k,e.shiftKey,{user:true}); }
+  });
+  $('scramble').addEventListener('click',()=>{
+    if(busy) return; resetHud(); const names=Object.keys(MOVES); let last='';
+    for(let i=0;i<20;i++){ let m; do{ m=names[Math.floor(Math.random()*6)]; }while(m===last); last=m; move(m,Math.random()<.5,{dur:110}); }
+    queue.push({axis:0,layer:9,dir:0,dur:0,after:()=>{ scrambled=!isSolved(); $('status').textContent=scrambled?'Scrambled: your turn':'Solved'; }}); run();
+  });
+  $('solve').addEventListener('click',()=>{
+    if(busy||!history.length) return; stopTimer();
+    const back=history.slice().reverse(); history=[];
+    back.forEach(([n,p])=>move(n,!p,{dur:150,record:false}));
+  });
+  $('reset').addEventListener('click',()=>{ if(busy) return; history=[]; scrambled=false; resetHud(); build(); $('status').textContent='Solved'; });
+
+  // ----- faces explored tracker -----
+  const order=['W','G','R','B','O','Y'], seen=new Set();
+  const minis=[...document.querySelectorAll('#trackMini b')];
+  const io=new IntersectionObserver(es=>es.forEach(en=>{
+    if(!en.isIntersecting) return; const f=en.target.dataset.face; if(seen.has(f)) return; seen.add(f);
+    const n=seen.size; $('trackText').textContent=`${n}/6 faces`;
+    // colour in the 3x3 tracker: fill tiles proportionally, in the colour of the latest face
+    const fill=Math.round(n*9/6); minis.forEach((b,i)=>{ if(i<fill && !b.dataset.c){ b.dataset.c=f; b.style.background=COL[f]; } });
+    if(n===6) toast("All six faces explored. You've seen the whole cube, so let's talk.");
+  }),{threshold:.35});
+  document.querySelectorAll('[data-face]').forEach(s=>io.observe(s));
+
+  let tt; function toast(msg){ const t=$('toast'); $('toastText').textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),5200); }
+
+  build();
+  let rz; addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(busy) return; sizeVars(); layout(); cubies.forEach(c=>draw(c,I)); },150); });
+
+  // a short demo turn so visitors see it moves
+  if(!reduce) setTimeout(()=>{ if(!history.length&&!busy){ move('R',false,{dur:420,record:false}); move('R',true,{dur:420,record:false}); } },900);
+})();
+</script>
 </body>
 </html>
